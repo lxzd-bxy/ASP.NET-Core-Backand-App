@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "0mG0/ulklBM=",
+  "dgSpecHash": "x6HZTtYI07U=",
   "success": true,
   "projectFilePath": "C:\\development\\WebApi\\WebApi.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\sasch\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\sasch\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\sasch\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.9\\microsoft.aspnetcore.authentication.jwtbearer.10.0.9.nupkg.sha512",
     "C:\\Users\\sasch\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.9\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.9.nupkg.sha512",

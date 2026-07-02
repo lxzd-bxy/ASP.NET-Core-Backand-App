@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ItLxzdbxy.WebApi.Domain;
 using Microsoft.AspNetCore.Identity;
-using ItLxzdbxy.WebApi.Services;
+using ItLxzdbxy.WebApi.Services.Interfaces;
+using ItLxzdbxy.WebApi.Services.Auth;
+using ItLxzdbxy.WebApi.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,11 +30,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty))
         };
     });
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddAuthorization();
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection("JwtOptions"));
 
 builder.Services.AddCors(opt =>
 {
@@ -41,7 +47,7 @@ builder.Services.AddCors(opt =>
         policy =>
         {
             policy
-                .WithOrigins("https://localhost:5277")
+                .WithOrigins("http://localhost:5173")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -89,4 +95,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
