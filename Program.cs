@@ -2,11 +2,12 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using ItLxzdbxy.WebApi.Domain;
 using Microsoft.AspNetCore.Identity;
-using ItLxzdbxy.WebApi.Services.Interfaces;
-using ItLxzdbxy.WebApi.Services.Auth;
-using ItLxzdbxy.WebApi.Options;
+using ItLxzdbxy.WebApi.Infrastructure.Data;
+using ItLxzdbxy.WebApi.Application.Interfaces;
+using ItLxzdbxy.WebApi.Infrastructure.Services;
+using ItLxzdbxy.WebApi.Application.Services;
+using ItLxzdbxy.WebApi.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,10 @@ builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(builder.Configu
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+var jwtSecret = builder.Configuration["JwtOptions:SecretKey"] ?? string.Empty;
+var jwtIssuer = builder.Configuration["JwtOptions:Issuer"];
+var jwtAudience = builder.Configuration["JwtOptions:Audience"];
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -27,10 +32,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty))
+                Encoding.UTF8.GetBytes(jwtSecret))
         };
     });
 
@@ -47,7 +52,7 @@ builder.Services.AddCors(opt =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173")
+                .WithOrigins("https://localhost:5173")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -86,6 +91,11 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapSwaggerUI();
+}
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();

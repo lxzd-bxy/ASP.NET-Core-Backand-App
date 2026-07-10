@@ -1,8 +1,8 @@
-namespace ItLxzdbxy.WebApi.Results;
+namespace ItLxzdbxy.WebApi.Application.DTOs;
 
 public abstract record AuthResult
 {
-    public record Success(string AccessToken) : AuthResult;
+    public record Success(string AccessToken, object? User = null) : AuthResult;
     public record Failure(string Error, string? ErrorCode = null) : AuthResult;
 
     public bool IsSuccess => this is Success;

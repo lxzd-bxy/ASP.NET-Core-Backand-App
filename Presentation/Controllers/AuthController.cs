@@ -1,11 +1,10 @@
-using ItLxzdbxy.WebApi.DTOs.Auth;
-using ItLxzdbxy.WebApi.Options;
-using ItLxzdbxy.WebApi.Results;
-using ItLxzdbxy.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using ItLxzdbxy.WebApi.Application.Interfaces;
+using ItLxzdbxy.WebApi.Infrastructure.Configuration;
+using ItLxzdbxy.WebApi.Application.DTOs;
 
-namespace ItLxzdbxy.Controllers;
+namespace ItLxzdbxy.WebApi.Presentation.Controllers;
 
 [ApiController]
 [Route("api/")]
@@ -27,13 +26,28 @@ public class AuthController(
 
         return result switch
         {
-            AuthResult.Success success => HandleSuccess(success.AccessToken),
+            AuthResult.Success success => HandleSuccess(success.AccessToken, success.User),
             AuthResult.Failure failure => HandleFailure(failure),
             _ => StatusCode(StatusCodes.Status500InternalServerError, "Unexpected error.")
         };
     }
 
-    private IActionResult HandleSuccess(string token)
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterDto request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await _authService.RegisterAsync(request, cancellationToken);
+
+        return result switch
+        {
+            AuthResult.Success success => HandleSuccess(success.AccessToken, success.User),
+            AuthResult.Failure failure => HandleFailure(failure),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, "Unexpected error.")
+        };
+    }
+
+    private OkObjectResult HandleSuccess(string token, object? user)
     {
         var cookieOptions = _jwtOptions.Value.Cookie;
         cookieOptions.Expires ??= DateTime.UtcNow.AddMinutes(_jwtOptions.Value.AccessTokenLifetimeMinutes);
@@ -42,11 +56,12 @@ public class AuthController(
 
         return Ok(new
         {
-            message = "Login successful",
+            message = "Authentication successful",
+            user = user
         });
     }
 
-    private IActionResult HandleFailure(AuthResult.Failure failure)
+    private UnauthorizedObjectResult HandleFailure(AuthResult.Failure failure)
     {
         var problem = new ProblemDetails
         {

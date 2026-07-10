@@ -1,7 +1,7 @@
 using FluentValidation;
-using ItLxzdbxy.WebApi.DTOs.Auth;
+using ItLxzdbxy.WebApi.Application.DTOs;
 
-namespace ItLxzdbxy.WebApi.Validators.Auth;
+namespace ItLxzdbxy.WebApi.Application.Validators;
 
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {

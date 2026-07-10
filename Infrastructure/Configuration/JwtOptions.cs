@@ -1,4 +1,4 @@
-namespace ItLxzdbxy.WebApi.Options;
+namespace ItLxzdbxy.WebApi.Infrastructure.Configuration;
 
 public class JwtOptions
 {
