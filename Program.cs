@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
-using ItLxzdbxy.WebApi.Infrastructure.Data;
-using ItLxzdbxy.WebApi.Application.Interfaces;
+using ItLxzdbxy.WebApi.Infrastructure.Persistence;
+using ItLxzdbxy.WebApi.Infrastructure.Authentication;
 using ItLxzdbxy.WebApi.Infrastructure.Services;
-using ItLxzdbxy.WebApi.Application.Services;
-using ItLxzdbxy.WebApi.Infrastructure.Configuration;
+using ItLxzdbxy.WebApi.Application.Common.Interfaces;
+using ItLxzdbxy.WebApi.Infrastructure.Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,7 @@ builder.Services.AddSwaggerUI();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 var jwtSecret = builder.Configuration["JwtOptions:SecretKey"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtOptions:Issuer"];
@@ -39,8 +40,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddAuthorization();
 builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection("JwtOptions"));
@@ -60,32 +62,7 @@ builder.Services.AddCors(opt =>
     );
 });
 
-
 var app = builder.Build();
-
-
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-
-    try
-    {
-        bool canConnect = await dbContext.Database.CanConnectAsync();
-        if (canConnect)
-        {
-            logger.LogInformation("DB works!");
-        }
-        else
-        {
-            logger.LogWarning("DB down!");
-        }
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "Error with connection to DB");
-    }
-}
 
 if (app.Environment.IsDevelopment())
 {

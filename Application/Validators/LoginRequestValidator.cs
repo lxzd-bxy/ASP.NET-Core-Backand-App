@@ -1,11 +1,11 @@
 using FluentValidation;
-using ItLxzdbxy.WebApi.Application.DTOs;
+using ItLxzdbxy.WebApi.Application.Common.Requests;
 
 namespace ItLxzdbxy.WebApi.Application.Validators;
 
-public class LoginRequestValidator : AbstractValidator<LoginRequest>
+public class LoginCommandValidator : AbstractValidator<LoginRequest>
 {
-    public LoginRequestValidator()
+    public LoginCommandValidator()
     {
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
         RuleFor(x => x.Password).NotEmpty().MinimumLength(6);

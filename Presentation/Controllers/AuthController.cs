@@ -1,76 +1,42 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using ItLxzdbxy.WebApi.Application.Interfaces;
-using ItLxzdbxy.WebApi.Infrastructure.Configuration;
-using ItLxzdbxy.WebApi.Application.DTOs;
+using MediatR;
+using ErrorOr;
+using ItLxzdbxy.WebApi.Application.Common.Requests;
+using ItLxzdbxy.WebApi.Application.Features.Auth.Commands;
+using ItLxzdbxy.WebApi.Infrastructure.Authentication;
 
 namespace ItLxzdbxy.WebApi.Presentation.Controllers;
 
 [ApiController]
 [Route("api/")]
 public class AuthController(
-    IAuthenticationService authService,
-    IOptions<JwtOptions> jwtOptions,
-    ILogger<AuthController> logger) : ControllerBase
+    IMediator mediator) : ControllerBase
 {
-    private readonly IAuthenticationService _authService = authService;
-    private readonly IOptions<JwtOptions> _jwtOptions = jwtOptions;
-    private readonly ILogger<AuthController> _logger = logger;
+    private readonly IMediator _mediator = mediator;
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(
-        [FromBody] LoginRequest request,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken ct)
     {
-        var result = await _authService.AuthenticateAsync(request, cancellationToken);
+        var command = new LoginCommand(request.Email, request.Password);
+        var result = await _mediator.Send(command, ct);
 
-        return result switch
-        {
-            AuthResult.Success success => HandleSuccess(success.AccessToken, success.User),
-            AuthResult.Failure failure => HandleFailure(failure),
-            _ => StatusCode(StatusCodes.Status500InternalServerError, "Unexpected error.")
-        };
+        return HandleErrorOr(result, success => Ok(new { Token = success.AccessToken }));
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(
-        [FromBody] RegisterDto request,
-        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request, CancellationToken ct)
     {
-        var result = await _authService.RegisterAsync(request, cancellationToken);
-
-        return result switch
-        {
-            AuthResult.Success success => HandleSuccess(success.AccessToken, success.User),
-            AuthResult.Failure failure => HandleFailure(failure),
-            _ => StatusCode(StatusCodes.Status500InternalServerError, "Unexpected error.")
-        };
+        var command = new RegisterCommand(request.Email, request.Password);
+        var result = await _mediator.Send(command, ct);
+        return HandleErrorOr(result, success => Ok(new { Token = success.AccessToken }));
     }
 
-    private OkObjectResult HandleSuccess(string token, object? user)
+    private IActionResult HandleErrorOr<T>(ErrorOr<T> result, Func<T, IActionResult> onSuccess)
     {
-        var cookieOptions = _jwtOptions.Value.Cookie;
-        cookieOptions.Expires ??= DateTime.UtcNow.AddMinutes(_jwtOptions.Value.AccessTokenLifetimeMinutes);
-
-        Response.Cookies.Append("access_token", token, cookieOptions);
-
-        return Ok(new
-        {
-            message = "Authentication successful",
-            user = user
-        });
-    }
-
-    private UnauthorizedObjectResult HandleFailure(AuthResult.Failure failure)
-    {
-        var problem = new ProblemDetails
-        {
-            Title = "Authentication failed",
-            Detail = failure.Error,
-            Status = StatusCodes.Status401Unauthorized,
-            Extensions = { ["errorCode"] = failure.ErrorCode ?? "UNAUTHORIZED" }
-        };
-
-        return Unauthorized(problem);
+        return result.Match(
+            success => onSuccess(success),
+            errors => Problem(errors.First().Description, statusCode: 400)
+        );
     }
 }
