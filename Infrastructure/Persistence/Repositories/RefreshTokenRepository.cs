@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ItLxzdbxy.WebApi.Infrastructure.Persistence.Repositories;
 
-public class RefreshTokenRepository(AppDbContext context) : IRefreshTokenRepository
+public class RefreshTokenRepository(AuthDbContext context) : IRefreshTokenRepository
 {
-	private readonly AppDbContext _context = context;
+	private readonly AuthDbContext _context = context;
 
 	public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken ct)
 	{

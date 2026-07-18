@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using MediatR;
 using ErrorOr;
 using ItLxzdbxy.WebApi.Application.Common.Requests;
 using ItLxzdbxy.WebApi.Application.Features.Auth.Commands;
-using ItLxzdbxy.WebApi.Infrastructure.Authentication;
 
 namespace ItLxzdbxy.WebApi.Presentation.Controllers;
 
@@ -34,9 +32,28 @@ public class AuthController(
 
     private IActionResult HandleErrorOr<T>(ErrorOr<T> result, Func<T, IActionResult> onSuccess)
     {
-        return result.Match(
-            success => onSuccess(success),
-            errors => Problem(errors.First().Description, statusCode: 400)
+        if (!result.IsError)
+            return onSuccess(result.Value);
+
+        var fiirstError = result.Errors[0];
+        var statusCode = fiirstError.Type switch
+        {
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
+            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+            ErrorType.Forbidden => StatusCodes.Status403Forbidden,
+            ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.Conflict => StatusCodes.Status409Conflict,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        return Problem(
+            detail: "One or more errors occurred.",
+            statusCode: statusCode,
+            title: "Error",
+            extensions: new Dictionary<string, object?>
+            {
+                ["errors"] = result.Errors.Select(e => new { e.Code, e.Description })
+            }
         );
     }
 }

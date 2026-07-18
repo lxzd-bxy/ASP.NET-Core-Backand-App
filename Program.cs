@@ -8,6 +8,9 @@ using ItLxzdbxy.WebApi.Infrastructure.Authentication;
 using ItLxzdbxy.WebApi.Infrastructure.Services;
 using ItLxzdbxy.WebApi.Application.Common.Interfaces;
 using ItLxzdbxy.WebApi.Infrastructure.Persistence.Repositories;
+using MediatR;
+using ItLxzdbxy.WebApi.Application.Common.Behaviors;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +18,12 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerUI();
 
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AuthDbContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 var jwtSecret = builder.Configuration["JwtOptions:SecretKey"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtOptions:Issuer"];

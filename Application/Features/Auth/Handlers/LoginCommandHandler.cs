@@ -27,7 +27,7 @@ public class LoginCommandHandler(
             user,
             request.Password,
             isPersistent: false,
-            lockoutOnFailure: true
+            lockoutOnFailure: false
         );
 
         if (!signInResult.Succeeded)
