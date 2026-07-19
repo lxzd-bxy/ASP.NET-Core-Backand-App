@@ -28,6 +28,10 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 var jwtSecret = builder.Configuration["JwtOptions:SecretKey"] ?? string.Empty;
 var jwtIssuer = builder.Configuration["JwtOptions:Issuer"];
 var jwtAudience = builder.Configuration["JwtOptions:Audience"];
+var jwtSettings = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()
+    ?? throw new InvalidOperationException("Jwt configuration section is missing or invalid.");
+
+builder.Services.AddSingleton(jwtSettings);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

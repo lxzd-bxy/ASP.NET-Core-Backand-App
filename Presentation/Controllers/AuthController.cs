@@ -19,7 +19,12 @@ public class AuthController(
         var command = new LoginCommand(request.Email, request.Password);
         var result = await _mediator.Send(command, ct);
 
-        return HandleErrorOr(result, success => Ok(new { Token = success.AccessToken }));
+        return HandleErrorOr(result, success => Ok(new
+        {
+            success.AccessToken,
+            success.RefreshToken,
+            success.ExpiresAt
+        }));
     }
 
     [HttpPost("register")]
@@ -27,7 +32,12 @@ public class AuthController(
     {
         var command = new RegisterCommand(request.Email, request.Password);
         var result = await _mediator.Send(command, ct);
-        return HandleErrorOr(result, success => Ok(new { Token = success.AccessToken }));
+        return HandleErrorOr(result, success => Ok(new
+        {
+            success.AccessToken,
+            success.RefreshToken,
+            success.ExpiresAt
+        }));
     }
 
     private IActionResult HandleErrorOr<T>(ErrorOr<T> result, Func<T, IActionResult> onSuccess)
