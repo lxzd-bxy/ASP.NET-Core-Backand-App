@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/modules/" />
+  <Folder Name="/modules/Auth/">
+    <Project Path="modules/Auth/Application/Application.csproj" />
+    <Project Path="modules/Auth/Domain/Domain.csproj" />
+    <Project Path="modules/Auth/Infrastructure/Infrastructure.csproj" />
+    <Project Path="modules/Auth/Presentation/Presentation.csproj" />
+  </Folder>
+</Solution>
