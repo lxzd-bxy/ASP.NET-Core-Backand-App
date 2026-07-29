@@ -22,6 +22,8 @@ public class LoginCommandHandler(IIdentityUserRepository userRepository, IJwtSer
         if (!isPasswordValid) return AuthException.IncorrectPassword;
 
         var accessToken = _jwtService.GenerateAccessToken(user);
-        return new AuthResponse(accessToken);
+        var refreshToken = _jwtService.GenerateRefreshToken();
+
+        return new AuthResponse(accessToken, refreshToken);
     }
 }

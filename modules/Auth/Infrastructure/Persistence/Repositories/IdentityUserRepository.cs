@@ -9,12 +9,21 @@ public class IdentityUserRepository(UserManager<IdentityUser> userManager) : IId
 {
     private readonly UserManager<IdentityUser> _userManager = userManager;
 
+    public async Task<UserClaimsDto> FindByIdAsync(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException("User ID cannot be null or empty.", nameof(id));
+
+        var user = await _userManager.FindByIdAsync(id) ?? throw new InvalidOperationException("User not found.");
+        return new UserClaimsDto(Id: user.Id, Email: user.Email ?? string.Empty, Password: user.PasswordHash ?? string.Empty);
+    }
+
     public async Task<UserClaimsDto?> FindByEmailAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
         return user is null
             ? null
-            : new UserClaimsDto(user.Id, user.Email ?? string.Empty, user.PasswordHash ?? string.Empty);
+            : new UserClaimsDto(Id: user.Id, Email: user.Email ?? string.Empty, Password: user.PasswordHash ?? string.Empty);
     }
 
     public async Task<bool> CheckPasswordAsync(UserClaimsDto user, string password)
@@ -41,6 +50,6 @@ public class IdentityUserRepository(UserManager<IdentityUser> userManager) : IId
             return errors;
         }
 
-        return new UserClaimsDto(user.Id, user.Email, password);
+        return new UserClaimsDto(Id: user.Id, Email: user.Email, Password: user.PasswordHash);
     }
 }

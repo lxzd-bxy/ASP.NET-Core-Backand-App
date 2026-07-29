@@ -1,3 +1,3 @@
 namespace LxzdBxy.WebApi.Application.Features.Auth.Responses;
 
-public record AuthResponse(string AccessToken);
+public record AuthResponse(string AccessToken, string RefreshToken, DateTime? ExpiresAt = null);

@@ -1,21 +1,20 @@
-/*using MediatR;
+using MediatR;
 using LxzdBxy.WebApi.Application.Common.Interfaces;
 using LxzdBxy.WebApi.Application.Common.Exceptions;
 using LxzdBxy.WebApi.Application.Features.Auth.Commands;
 using LxzdBxy.WebApi.Application.Features.Auth.Responses;
 using ErrorOr;
-using Microsoft.AspNetCore.Identity;
 
 namespace LxzdBxy.WebApi.Application.Features.Auth.Handlers;
 
 public class RefreshTokenCommandHandler(
-    UserManager<IdentityUser> userManager,
+    IIdentityUserRepository userRepository,
     IJwtService jwtService,
     IRefreshTokenRepository refreshTokenRepository
     ) :
     IRequestHandler<RefreshTokenCommand, ErrorOr<AuthResponse>>
 {
-    private readonly UserManager<IdentityUser> _userManager = userManager;
+    private readonly IIdentityUserRepository _userRepository = userRepository;
     private readonly IJwtService _jwtService = jwtService;
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
 
@@ -27,7 +26,7 @@ public class RefreshTokenCommandHandler(
         if (storedToken is null || storedToken.ExpiresAt < DateTime.UtcNow || storedToken.IsRevoked)
             return AuthException.InvalidRefreshToken;
 
-        var user = await _userManager.FindByIdAsync(storedToken.UserId);
+        var user = await _userRepository.FindByIdAsync(storedToken.UserId);
         if (user is null)
             return AuthException.UserNotFound;
 
@@ -36,7 +35,6 @@ public class RefreshTokenCommandHandler(
         var refreshExpiry = _jwtService.GetRefreshTokenExpiryTime();
 
         storedToken.Token = newRefreshToken;
-        storedToken.ExpiresAt = refreshExpiry;
         storedToken.CreatedAt = DateTime.UtcNow;
         storedToken.IsRevoked = false;
 
@@ -49,4 +47,3 @@ public class RefreshTokenCommandHandler(
             ExpiresAt: refreshExpiry);
     }
 }
-*/

@@ -41,4 +41,9 @@ public class JwtService(IOptions<JwtSettings> jwtOptions) : IJwtService
         rng.GetBytes(randomBytes);
         return Convert.ToBase64String(randomBytes);
     }
+
+    public DateTime GetRefreshTokenExpiryTime()
+    {
+        return DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpirationDays);
+    }
 }

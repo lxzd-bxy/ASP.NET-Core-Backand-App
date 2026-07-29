@@ -1,4 +1,6 @@
 using System.Text;
+using LxzdBxy.WebApi.Presentation.Interfaces;
+using LxzdBxy.WebApi.Presentation.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -34,6 +36,9 @@ public static class DependencyInjection
             });
 
 
+        services.AddScoped<ICookieService, CookieService>();
+        services.AddScoped<ErrorOrHandler>();
+        services.AddHttpContextAccessor();
         services.AddAuthorization();
 
         services.AddCors(opt =>

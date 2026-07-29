@@ -6,4 +6,5 @@ public interface IJwtService
 {
     string GenerateAccessToken(UserClaimsDto user);
     string GenerateRefreshToken();
+    DateTime GetRefreshTokenExpiryTime();
 }

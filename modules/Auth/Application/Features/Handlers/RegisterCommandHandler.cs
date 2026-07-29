@@ -22,6 +22,7 @@ public class RegisterCommandHandler(IIdentityUserRepository userRepository, IJwt
         if (createResult.IsError)
             return createResult.Errors;
         var accessToken = _jwtService.GenerateAccessToken(createResult.Value);
-        return new AuthResponse(accessToken);
+        var refreshToken = _jwtService.GenerateRefreshToken();
+        return new AuthResponse(accessToken, refreshToken);
     }
 }
