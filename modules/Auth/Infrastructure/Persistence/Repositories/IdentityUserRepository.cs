@@ -16,7 +16,7 @@ public class IdentityUserRepository(UserManager<AppUser> userManager) : IIdentit
             throw new ArgumentException("User ID cannot be null or empty.", nameof(id));
 
         var user = await _userManager.FindByIdAsync(id) ?? throw new InvalidOperationException("User not found.");
-        return new UserClaimsDto(Id: user.Id, Email: user.Email ?? string.Empty, Password: user.PasswordHash ?? string.Empty);
+        return new UserClaimsDto(Id: user.Id, Email: user.Email ?? string.Empty);
     }
 
     public async Task<UserClaimsDto?> FindByEmailAsync(string email)
@@ -24,7 +24,7 @@ public class IdentityUserRepository(UserManager<AppUser> userManager) : IIdentit
         var user = await _userManager.FindByEmailAsync(email);
         return user is null
             ? null
-            : new UserClaimsDto(Id: user.Id, Email: user.Email ?? string.Empty, Password: user.PasswordHash ?? string.Empty);
+            : new UserClaimsDto(Id: user.Id, Email: user.Email ?? string.Empty);
     }
 
     public async Task<bool> CheckPasswordAsync(UserClaimsDto user, string password)
@@ -51,6 +51,6 @@ public class IdentityUserRepository(UserManager<AppUser> userManager) : IIdentit
             return errors;
         }
 
-        return new UserClaimsDto(Id: user.Id, Email: user.Email, Password: user.PasswordHash);
+        return new UserClaimsDto(Id: user.Id, Email: user.Email);
     }
 }

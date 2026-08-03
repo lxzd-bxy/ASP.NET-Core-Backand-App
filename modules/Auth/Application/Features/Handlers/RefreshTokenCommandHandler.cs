@@ -32,7 +32,6 @@ public class RefreshTokenCommandHandler(
 
         var newAccessToken = _jwtService.GenerateAccessToken(user);
         var newRefreshToken = _jwtService.GenerateRefreshToken();
-        var refreshExpiry = _jwtService.GetRefreshTokenExpiryTime();
 
         storedToken.Token = newRefreshToken;
         storedToken.CreatedAt = DateTime.UtcNow;
