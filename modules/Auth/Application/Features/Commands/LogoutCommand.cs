@@ -1,7 +1,7 @@
 using ErrorOr;
 using MediatR;
-using LxzdBxy.WebApi.Application.Features.Auth.Responses;
+using LxzdBxy.WebApi.Application.Features.Responses;
 
-namespace LxzdBxy.WebApi.Application.Features.Auth.Commands;
+namespace LxzdBxy.WebApi.Application.Features.Commands;
 
-public record LogoutCommand : IRequest<ErrorOr<AuthResponse>> { }
+public record LogoutCommand : IRequest<ErrorOr<LogoutResponse>> { }

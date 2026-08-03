@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Identity;
+using ErrorOr;
+using LxzdBxy.WebApi.Infrastructure.Identity;
 using LxzdBxy.WebApi.Application.Common.Models;
 using LxzdBxy.WebApi.Application.Common.Interfaces;
-using ErrorOr;
 
 namespace LxzdBxy.WebApi.Infrastructure.Persistence.Repositories;
 
-public class IdentityUserRepository(UserManager<IdentityUser> userManager) : IIdentityUserRepository
+public class IdentityUserRepository(UserManager<AppUser> userManager) : IIdentityUserRepository
 {
-    private readonly UserManager<IdentityUser> _userManager = userManager;
+    private readonly UserManager<AppUser> _userManager = userManager;
 
     public async Task<UserClaimsDto> FindByIdAsync(string id)
     {
@@ -34,7 +35,7 @@ public class IdentityUserRepository(UserManager<IdentityUser> userManager) : IId
 
     public async Task<ErrorOr<UserClaimsDto>> CreateAsync(string email, string password)
     {
-        var user = new IdentityUser
+        var user = new AppUser
         {
             UserName = email,
             Email = email

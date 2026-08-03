@@ -1,14 +1,11 @@
-using LxzdBxy.WebApi.Application.Common.Interfaces;
 using LxzdBxy.WebApi.Infrastructure.Configurations;
-using LxzdBxy.WebApi.Infrastructure.Persistence.Repositories;
 using LxzdBxy.WebApi.Presentation.Interfaces;
 
 namespace LxzdBxy.WebApi.Presentation.Services;
 
-public class CookieService(JwtSettings jwtSettings, RefreshTokenRepository refreshTokenRepository) : ICookieService
+public class CookieService(JwtSettings jwtSettings) : ICookieService
 {
     private readonly JwtSettings _jwtSettings = jwtSettings;
-    private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
     public void SetRefreshTokenCookie(HttpResponse response, string refreshToken)
     {
         response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
@@ -17,7 +14,7 @@ public class CookieService(JwtSettings jwtSettings, RefreshTokenRepository refre
             Secure = true,
             SameSite = SameSiteMode.Lax,
             MaxAge = TimeSpan.FromDays(_jwtSettings.RefreshTokenExpirationDays),
-            Path = "/auth/refresh"
+            Path = "/api/refresh"
         });
     }
 

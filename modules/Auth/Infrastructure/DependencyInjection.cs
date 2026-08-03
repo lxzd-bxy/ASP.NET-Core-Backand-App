@@ -7,6 +7,7 @@ using LxzdBxy.WebApi.Infrastructure.Configurations;
 using LxzdBxy.WebApi.Infrastructure.Authentication;
 using LxzdBxy.WebApi.Application.Common.Interfaces;
 using LxzdBxy.WebApi.Infrastructure.Persistence.Repositories;
+using LxzdBxy.WebApi.Infrastructure.Identity;
 
 namespace LxzdBxy.WebApi.Infrastructure;
 
@@ -18,7 +19,7 @@ public static class DepedencyInjection
     ?? throw new InvalidOperationException("Jwt configuration section is missing or invalid.");
         services.AddSingleton(jwtSettings);
         services.AddDbContext<AuthDbContext>(opt => opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-        services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
+        services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IIdentityUserRepository, IdentityUserRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();

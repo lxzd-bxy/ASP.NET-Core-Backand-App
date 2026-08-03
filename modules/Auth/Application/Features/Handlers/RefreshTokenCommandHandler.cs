@@ -1,8 +1,8 @@
 using MediatR;
 using LxzdBxy.WebApi.Application.Common.Interfaces;
 using LxzdBxy.WebApi.Application.Common.Exceptions;
-using LxzdBxy.WebApi.Application.Features.Auth.Commands;
-using LxzdBxy.WebApi.Application.Features.Auth.Responses;
+using LxzdBxy.WebApi.Application.Features.Commands;
+using LxzdBxy.WebApi.Application.Features.Responses;
 using ErrorOr;
 
 namespace LxzdBxy.WebApi.Application.Features.Auth.Handlers;
@@ -12,13 +12,13 @@ public class RefreshTokenCommandHandler(
     IJwtService jwtService,
     IRefreshTokenRepository refreshTokenRepository
     ) :
-    IRequestHandler<RefreshTokenCommand, ErrorOr<AuthResponse>>
+    IRequestHandler<RefreshTokenCommand, ErrorOr<RefreshResponse>>
 {
     private readonly IIdentityUserRepository _userRepository = userRepository;
     private readonly IJwtService _jwtService = jwtService;
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
 
-    public async Task<ErrorOr<AuthResponse>> Handle(RefreshTokenCommand request, CancellationToken ct)
+    public async Task<ErrorOr<RefreshResponse>> Handle(RefreshTokenCommand request, CancellationToken ct)
     {
         var storedToken = await _refreshTokenRepository.GetByTokenAsync(
             request.RefreshToken, ct);
@@ -41,9 +41,6 @@ public class RefreshTokenCommandHandler(
         _refreshTokenRepository.Update(storedToken);
         await _refreshTokenRepository.SaveChangesAsync(ct);
 
-        return new AuthResponse(
-            AccessToken: newAccessToken,
-            RefreshToken: newRefreshToken,
-            ExpiresAt: refreshExpiry);
+        return new RefreshResponse(AccessToken: newAccessToken);
     }
 }
