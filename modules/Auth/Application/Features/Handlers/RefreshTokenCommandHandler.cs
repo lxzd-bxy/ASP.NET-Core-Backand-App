@@ -31,14 +31,6 @@ public class RefreshTokenCommandHandler(
             return AuthException.UserNotFound;
 
         var newAccessToken = _jwtService.GenerateAccessToken(user);
-        var newRefreshToken = _jwtService.GenerateRefreshToken();
-
-        storedToken.Token = newRefreshToken;
-        storedToken.CreatedAt = DateTime.UtcNow;
-        storedToken.IsRevoked = false;
-
-        _refreshTokenRepository.Update(storedToken);
-        await _refreshTokenRepository.SaveChangesAsync(ct);
 
         return new RefreshResponse(AccessToken: newAccessToken);
     }
