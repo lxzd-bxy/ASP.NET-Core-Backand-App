@@ -21,7 +21,7 @@ public class RegisterCommandHandler(
     {
         var existingUser = await _userRepository.FindByEmailAsync(request.Email);
         if (existingUser is not null)
-            return Error.Conflict(description: "Пользователь с таким email уже зарегистрирован");
+            return Error.Conflict(description: "A user with this email already exists");
 
         var createResult = await _userRepository.CreateAsync(request.Email, request.Password);
         if (createResult.IsError)

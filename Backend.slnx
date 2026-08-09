@@ -6,5 +6,6 @@
     <Project Path="modules/Auth/Infrastructure/Infrastructure.csproj" />
     <Project Path="modules/Auth/Presentation/Presentation.csproj" />
     <Project Path="modules/Auth/Test/Application.UnitTests/Application.UnitTests.csproj" />
+    <Project Path="modules/Auth/Test/Domain.UnitTests/Domain.UnitTests.csproj" />
   </Folder>
 </Solution>
