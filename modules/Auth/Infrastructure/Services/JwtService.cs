@@ -4,11 +4,11 @@ using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using LxzdBxy.WebApi.Application.Common.Interfaces;
-using LxzdBxy.WebApi.Application.Common.Models;
-using LxzdBxy.WebApi.Infrastructure.Configurations;
+using LxzdBxy.Backend.Application.Common.Interfaces;
+using LxzdBxy.Backend.Application.Common.Models;
+using LxzdBxy.Backend.Infrastructure.Configurations;
 
-namespace LxzdBxy.WebApi.Infrastructure.Authentication;
+namespace LxzdBxy.Backend.Infrastructure.Authentication;
 
 public class JwtService(IOptions<JwtSettings> jwtOptions) : IJwtService
 {

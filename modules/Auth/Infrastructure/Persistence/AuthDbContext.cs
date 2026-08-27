@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using LxzdBxy.WebApi.Domain.Entities;
-using LxzdBxy.WebApi.Infrastructure.Identity;
+using LxzdBxy.Backend.Domain.Entities;
+using LxzdBxy.Backend.Infrastructure.Identity;
 
-namespace LxzdBxy.WebApi.Infrastructure.Persistence;
+namespace LxzdBxy.Backend.Infrastructure.Persistence;
 
 public class AuthDbContext(DbContextOptions<AuthDbContext> options) : IdentityDbContext<AppUser>(options)
 {

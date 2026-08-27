@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace LxzdBxy.WebApi.Infrastructure.Identity;
+namespace LxzdBxy.Backend.Infrastructure.Identity;
 
 public class AppUser : IdentityUser { }

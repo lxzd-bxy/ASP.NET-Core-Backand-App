@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using ErrorOr;
 
-namespace LxzdBxy.WebApi.Presentation.Services;
+namespace LxzdBxy.Backend.Presentation.Services;
 
 public class ErrorOrHandler(ProblemDetailsFactory problemDetailsFactory)
 {

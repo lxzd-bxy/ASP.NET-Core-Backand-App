@@ -1,3 +1,3 @@
-namespace LxzdBxy.WebApi.Application.Features.Responses;
+namespace LxzdBxy.Backend.Application.Features.Responses;
 
 public record LoginResponse(string AccessToken, string RefreshToken);

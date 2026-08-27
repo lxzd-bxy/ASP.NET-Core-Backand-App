@@ -1,6 +1,6 @@
-using LxzdBxy.WebApi.Application;
-using LxzdBxy.WebApi.Infrastructure;
-using LxzdBxy.WebApi.Presentation;
+using LxzdBxy.Backend.Application;
+using LxzdBxy.Backend.Infrastructure;
+using LxzdBxy.Backend.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplication()

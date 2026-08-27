@@ -1,6 +1,6 @@
-using LxzdBxy.WebApi.Application.Common.Models;
+using LxzdBxy.Backend.Application.Common.Models;
 
-namespace LxzdBxy.WebApi.Application.Common.Interfaces;
+namespace LxzdBxy.Backend.Application.Common.Interfaces;
 
 public interface IJwtService
 {

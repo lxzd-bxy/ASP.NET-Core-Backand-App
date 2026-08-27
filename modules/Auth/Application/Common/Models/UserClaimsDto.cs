@@ -1,4 +1,4 @@
-namespace LxzdBxy.WebApi.Application.Common.Models;
+namespace LxzdBxy.Backend.Application.Common.Models;
 
 public record UserClaimsDto(
     string Id,

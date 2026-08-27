@@ -1,14 +1,14 @@
 using Moq;
 using FluentAssertions;
-using LxzdBxy.WebApi.Application.Common.Interfaces;
-using LxzdBxy.WebApi.Application.Features.Auth.Handlers;
-using LxzdBxy.WebApi.Application.Features.Commands;
-using LxzdBxy.WebApi.Domain.Entities;
-using LxzdBxy.WebApi.Application.Features.Responses;
-using LxzdBxy.WebApi.Application.Common.Exceptions;
-using LxzdBxy.WebApi.Application.Common.Models;
+using LxzdBxy.Backend.Application.Common.Interfaces;
+using LxzdBxy.Backend.Application.Features.Auth.Handlers;
+using LxzdBxy.Backend.Application.Features.Commands;
+using LxzdBxy.Backend.Domain.Entities;
+using LxzdBxy.Backend.Application.Features.Responses;
+using LxzdBxy.Backend.Application.Common.Exceptions;
+using LxzdBxy.Backend.Application.Common.Models;
 
-namespace Lxzd.WebApi.Test.Application.UnitTests;
+namespace LxzdBxy.Backend.Test.Application.UnitTests;
 
 public class LoginCommandHandlerTests
 {

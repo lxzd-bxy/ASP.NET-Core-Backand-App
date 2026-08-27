@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using LxzdBxy.WebApi.Application.Common.Interfaces;
-using LxzdBxy.WebApi.Domain.Entities;
+using LxzdBxy.Backend.Application.Common.Interfaces;
+using LxzdBxy.Backend.Domain.Entities;
 
-namespace LxzdBxy.WebApi.Infrastructure.Persistence.Repositories;
+namespace LxzdBxy.Backend.Infrastructure.Persistence.Repositories;
 
 public class RefreshTokenRepository(AuthDbContext context) : IRefreshTokenRepository
 {

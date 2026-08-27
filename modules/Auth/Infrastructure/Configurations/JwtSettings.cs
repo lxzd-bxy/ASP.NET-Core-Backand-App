@@ -1,4 +1,4 @@
-namespace LxzdBxy.WebApi.Infrastructure.Configurations;
+namespace LxzdBxy.Backend.Infrastructure.Configurations;
 
 public class JwtSettings
 {

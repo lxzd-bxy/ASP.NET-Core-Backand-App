@@ -1,7 +1,7 @@
 using ErrorOr;
-using LxzdBxy.WebApi.Application.Features.Responses;
+using LxzdBxy.Backend.Application.Features.Responses;
 using MediatR;
 
-namespace LxzdBxy.WebApi.Application.Features.Commands;
+namespace LxzdBxy.Backend.Application.Features.Commands;
 
 public record RegisterCommand(string Email, string Password) : IRequest<ErrorOr<RegisterResponse>>;

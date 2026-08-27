@@ -1,10 +1,10 @@
 using System.Text;
-using LxzdBxy.WebApi.Presentation.Interfaces;
-using LxzdBxy.WebApi.Presentation.Services;
+using LxzdBxy.Backend.Presentation.Interfaces;
+using LxzdBxy.Backend.Presentation.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace LxzdBxy.WebApi.Presentation;
+namespace LxzdBxy.Backend.Presentation;
 
 public static class DependencyInjection
 {

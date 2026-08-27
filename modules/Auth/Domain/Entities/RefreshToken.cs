@@ -1,4 +1,4 @@
-namespace LxzdBxy.WebApi.Domain.Entities;
+namespace LxzdBxy.Backend.Domain.Entities;
 
 public class RefreshToken
 {

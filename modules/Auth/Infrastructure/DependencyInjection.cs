@@ -2,14 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using LxzdBxy.WebApi.Infrastructure.Persistence;
-using LxzdBxy.WebApi.Infrastructure.Configurations;
-using LxzdBxy.WebApi.Infrastructure.Authentication;
-using LxzdBxy.WebApi.Application.Common.Interfaces;
-using LxzdBxy.WebApi.Infrastructure.Persistence.Repositories;
-using LxzdBxy.WebApi.Infrastructure.Identity;
+using LxzdBxy.Backend.Infrastructure.Persistence;
+using LxzdBxy.Backend.Infrastructure.Configurations;
+using LxzdBxy.Backend.Infrastructure.Authentication;
+using LxzdBxy.Backend.Application.Common.Interfaces;
+using LxzdBxy.Backend.Infrastructure.Persistence.Repositories;
+using LxzdBxy.Backend.Infrastructure.Identity;
 
-namespace LxzdBxy.WebApi.Infrastructure;
+namespace LxzdBxy.Backend.Infrastructure;
 
 public static class DepedencyInjection
 {

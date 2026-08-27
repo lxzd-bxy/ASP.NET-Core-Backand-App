@@ -1,11 +1,11 @@
 using MediatR;
 using ErrorOr;
-using LxzdBxy.WebApi.Application.Features.Commands;
-using LxzdBxy.WebApi.Application.Common.Interfaces;
-using LxzdBxy.WebApi.Domain.Entities;
-using LxzdBxy.WebApi.Application.Features.Responses;
+using LxzdBxy.Backend.Application.Features.Commands;
+using LxzdBxy.Backend.Application.Common.Interfaces;
+using LxzdBxy.Backend.Domain.Entities;
+using LxzdBxy.Backend.Application.Features.Responses;
 
-namespace LxzdBxy.WebApi.Application.Features.Auth.Handlers;
+namespace LxzdBxy.Backend.Application.Features.Auth.Handlers;
 
 public class RegisterCommandHandler(
     IIdentityUserRepository userRepository,

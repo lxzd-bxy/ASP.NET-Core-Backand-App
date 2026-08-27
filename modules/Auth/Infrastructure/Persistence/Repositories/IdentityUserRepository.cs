@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using ErrorOr;
-using LxzdBxy.WebApi.Infrastructure.Identity;
-using LxzdBxy.WebApi.Application.Common.Models;
-using LxzdBxy.WebApi.Application.Common.Interfaces;
+using LxzdBxy.Backend.Infrastructure.Identity;
+using LxzdBxy.Backend.Application.Common.Models;
+using LxzdBxy.Backend.Application.Common.Interfaces;
 
-namespace LxzdBxy.WebApi.Infrastructure.Persistence.Repositories;
+namespace LxzdBxy.Backend.Infrastructure.Persistence.Repositories;
 
 public class IdentityUserRepository(UserManager<AppUser> userManager) : IIdentityUserRepository
 {

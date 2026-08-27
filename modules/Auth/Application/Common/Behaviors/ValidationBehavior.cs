@@ -2,7 +2,7 @@ using MediatR;
 using ErrorOr;
 using FluentValidation;
 
-namespace LxzdBxy.WebApi.Application.Common.Behaviors;
+namespace LxzdBxy.Backend.Application.Common.Behaviors;
 
 public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) :
     IPipelineBehavior<TRequest, TResponse>

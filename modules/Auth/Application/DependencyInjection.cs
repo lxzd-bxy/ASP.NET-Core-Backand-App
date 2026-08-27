@@ -2,9 +2,9 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using FluentValidation;
-using LxzdBxy.WebApi.Application.Common.Behaviors;
+using LxzdBxy.Backend.Application.Common.Behaviors;
 
-namespace LxzdBxy.WebApi.Application;
+namespace LxzdBxy.Backend.Application;
 
 public static class DepedencyInjection
 {

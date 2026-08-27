@@ -1,6 +1,6 @@
 using ErrorOr;
 
-namespace LxzdBxy.WebApi.Application.Common.Exceptions;
+namespace LxzdBxy.Backend.Application.Common.Exceptions;
 
 public static class AuthException
 {

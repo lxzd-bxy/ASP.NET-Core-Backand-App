@@ -1,4 +1,4 @@
-namespace LxzdBxy.WebApi.Presentation.Interfaces;
+namespace LxzdBxy.Backend.Presentation.Interfaces;
 
 public interface ICookieService
 {

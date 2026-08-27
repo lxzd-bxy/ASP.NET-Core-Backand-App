@@ -1,7 +1,7 @@
-using LxzdBxy.WebApi.Infrastructure.Configurations;
-using LxzdBxy.WebApi.Presentation.Interfaces;
+using LxzdBxy.Backend.Infrastructure.Configurations;
+using LxzdBxy.Backend.Presentation.Interfaces;
 
-namespace LxzdBxy.WebApi.Presentation.Services;
+namespace LxzdBxy.Backend.Presentation.Services;
 
 public class CookieService(JwtSettings jwtSettings) : ICookieService
 {

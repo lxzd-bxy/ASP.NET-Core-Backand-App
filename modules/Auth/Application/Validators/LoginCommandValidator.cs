@@ -1,7 +1,7 @@
 using FluentValidation;
-using LxzdBxy.WebApi.Application.Common.Requests;
+using LxzdBxy.Backend.Application.Common.Requests;
 
-namespace LxzdBxy.WebApi.Application.Validators;
+namespace LxzdBxy.Backend.Application.Validators;
 
 public class LoginCommandValidator : AbstractValidator<LoginRequest>
 {

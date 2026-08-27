@@ -1,6 +1,6 @@
-using LxzdBxy.WebApi.Domain.Entities;
+using LxzdBxy.Backend.Domain.Entities;
 
-namespace LxzdBxy.WebApi.Application.Common.Interfaces;
+namespace LxzdBxy.Backend.Application.Common.Interfaces;
 
 public interface IRefreshTokenRepository
 {

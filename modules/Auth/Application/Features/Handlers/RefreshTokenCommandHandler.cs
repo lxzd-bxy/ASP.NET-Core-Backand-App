@@ -1,11 +1,11 @@
 using MediatR;
-using LxzdBxy.WebApi.Application.Common.Interfaces;
-using LxzdBxy.WebApi.Application.Common.Exceptions;
-using LxzdBxy.WebApi.Application.Features.Commands;
-using LxzdBxy.WebApi.Application.Features.Responses;
+using LxzdBxy.Backend.Application.Common.Interfaces;
+using LxzdBxy.Backend.Application.Common.Exceptions;
+using LxzdBxy.Backend.Application.Features.Commands;
+using LxzdBxy.Backend.Application.Features.Responses;
 using ErrorOr;
 
-namespace LxzdBxy.WebApi.Application.Features.Auth.Handlers;
+namespace LxzdBxy.Backend.Application.Features.Auth.Handlers;
 
 public class RefreshTokenCommandHandler(
     IIdentityUserRepository userRepository,

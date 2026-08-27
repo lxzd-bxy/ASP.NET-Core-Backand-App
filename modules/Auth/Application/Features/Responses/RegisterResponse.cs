@@ -1,3 +1,3 @@
-namespace LxzdBxy.WebApi.Application.Features.Responses;
+namespace LxzdBxy.Backend.Application.Features.Responses;
 
 public record RegisterResponse(string AccessToken, string RefreshToken);
