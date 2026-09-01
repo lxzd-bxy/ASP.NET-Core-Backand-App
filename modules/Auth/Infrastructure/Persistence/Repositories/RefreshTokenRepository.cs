@@ -24,6 +24,11 @@ public class RefreshTokenRepository(AuthDbContext context) : IRefreshTokenReposi
 		_context.RefreshTokens.Add(refreshToken);
 	}
 
+	public void Delete(RefreshToken refreshToken)
+	{
+		_context.RefreshTokens.Remove(refreshToken);
+	}
+
 	public async Task SaveChangesAsync(CancellationToken ct)
 	{
 		await _context.SaveChangesAsync(ct);

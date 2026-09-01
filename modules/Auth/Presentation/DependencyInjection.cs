@@ -35,6 +35,10 @@ public static class DependencyInjection
                 };
             });
 
+        services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new StringTrimmerJsonConverter());
+        });
 
         services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<ErrorOrHandler>();

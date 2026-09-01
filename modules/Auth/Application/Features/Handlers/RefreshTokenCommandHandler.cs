@@ -21,7 +21,6 @@ public class RefreshTokenCommandHandler(
     public async Task<ErrorOr<RefreshResponse>> Handle(RefreshTokenCommand request, CancellationToken ct)
     {
         var storedToken = await _refreshTokenRepository.GetByTokenAsync(request.RefreshToken, ct);
-        Console.WriteLine($"Stored Token: {storedToken?.Token}, Expires At: {storedToken?.ExpiresAt}");
 
         if (storedToken is null || storedToken.ExpiresAt < DateTime.UtcNow)
             return AuthException.InvalidRefreshToken;

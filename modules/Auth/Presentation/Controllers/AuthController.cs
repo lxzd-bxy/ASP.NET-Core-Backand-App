@@ -42,13 +42,19 @@ public class AuthController(
         return _errorOrHandler.HandleErrorOr(result, success => Ok(new { success.AccessToken }), HttpContext);
     }
 
-    // [HttpPost("logout")]
-    // public async Task<IActionResult> Logout(CancellationToken ct)
-    // {
-    //     var command = new LogoutCommand();
-    //     var result = await _mediator.Send(command, ct);
-    //     return _errorOrHandler.HandleErrorOr(result, success => Ok(), HttpContext);
-    // }
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(CancellationToken ct)
+    {
+        var refreshToken = _cookieService.GetRefreshTokenFromRequest(Request);
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return Unauthorized();
+        }
+
+        var command = new LogoutCommand(refreshToken);
+        var result = await _mediator.Send(command, ct);
+        return _errorOrHandler.HandleErrorOr(result, success => Ok(), HttpContext);
+    }
 
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
