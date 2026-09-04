@@ -10,11 +10,11 @@ public class ErrorOrHandler(ProblemDetailsFactory problemDetailsFactory)
 
     public IActionResult HandleErrorOr<T>(
         ErrorOr<T> result,
-        Func<T, IActionResult> onSuccess,
+        // Func<T, IActionResult> onSuccess,
         HttpContext httpContext)
     {
-        if (!result.IsError)
-            return onSuccess(result.Value);
+        // if (!result.IsError)
+        //     return onSuccess(result.Value);
 
         var firstError = result.Errors[0];
         var statusCode = firstError.Type switch

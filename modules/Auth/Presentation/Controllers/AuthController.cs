@@ -4,6 +4,7 @@ using LxzdBxy.Backend.Application.Common.Requests;
 using LxzdBxy.Backend.Application.Features.Commands;
 using LxzdBxy.Backend.Presentation.Services;
 using LxzdBxy.Backend.Presentation.Interfaces;
+using ErrorOr;
 
 namespace LxzdBxy.Backend.Presentation.Controllers;
 
@@ -26,9 +27,12 @@ public class AuthController(
         var command = new LoginCommand(request.Email, request.Password);
         var result = await _mediator.Send(command, ct);
 
+        if (result.IsError)
+            return _errorOrHandler.HandleErrorOr(result, HttpContext);
+
         _cookieService.SetRefreshTokenCookie(Response, result.Value.RefreshToken);
 
-        return _errorOrHandler.HandleErrorOr(result, success => Ok(new { success.AccessToken }), HttpContext);
+        return Ok(new { result.Value.AccessToken });
     }
 
     [HttpPost("register")]
@@ -37,23 +41,25 @@ public class AuthController(
         var command = new RegisterCommand(request.Email, request.Password);
         var result = await _mediator.Send(command, ct);
 
+        if (result.IsError)
+            return _errorOrHandler.HandleErrorOr(result, HttpContext);
+
         _cookieService.SetRefreshTokenCookie(Response, result.Value.RefreshToken);
 
-        return _errorOrHandler.HandleErrorOr(result, success => Ok(new { success.AccessToken }), HttpContext);
+        return Ok(new { result.Value.AccessToken });
     }
 
     [HttpPost("logout")]
     public async Task<IActionResult> Logout(CancellationToken ct)
     {
         var refreshToken = _cookieService.GetRefreshTokenFromRequest(Request);
-        if (string.IsNullOrEmpty(refreshToken))
-        {
-            return Unauthorized();
-        }
 
-        var command = new LogoutCommand(refreshToken);
-        var result = await _mediator.Send(command, ct);
-        return _errorOrHandler.HandleErrorOr(result, success => Ok(), HttpContext);
+        if (!string.IsNullOrEmpty(refreshToken))
+        {
+            // await _authService.RevokeRefreshTokenAsync(refreshToken, ct);
+            _cookieService.ClearRefreshTokenCookie(Response);
+        }
+        return NoContent();
     }
 
     [HttpPost("refresh")]
@@ -68,10 +74,8 @@ public class AuthController(
         var command = new RefreshTokenCommand(refreshToken);
         var result = await _mediator.Send(command);
         if (result.IsError)
-        {
-            return Unauthorized(result.Errors);
-        }
+            return _errorOrHandler.HandleErrorOr(result, HttpContext);
 
-        return _errorOrHandler.HandleErrorOr(result, success => Ok(new { success.AccessToken }), HttpContext);
+        return Ok(new { result.Value.AccessToken });
     }
 }
