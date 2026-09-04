@@ -20,7 +20,13 @@ public class CookieService(JwtSettings jwtSettings) : ICookieService
 
     public void ClearRefreshTokenCookie(HttpResponse response)
     {
-        response.Cookies.Delete("refreshToken");
+        response.Cookies.Delete("refreshToken", new CookieOptions
+    {
+        HttpOnly = true,
+        Secure = true,
+        SameSite = SameSiteMode.Lax,
+        Path = "/"
+    });
     }
 
     public string? GetRefreshTokenFromRequest(HttpRequest request)
